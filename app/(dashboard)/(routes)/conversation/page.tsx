@@ -14,8 +14,6 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
-
 import axios from "axios"
 import Empty from "@/components/shared/Empty"
 import Loader from "@/components/shared/Loader"
@@ -23,10 +21,11 @@ import { cn } from "@/lib/utils"
 
 import UserAvatar from "@/components/shared/UserAvatar"
 import BotAvatar from "@/components/shared/BotAvatar"
+import { ChatCompletionRequestMessage } from "openai"
 
 const Conversation = () => {
     const router = useRouter()
-    const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([])
+    const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -39,11 +38,11 @@ const Conversation = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const userMessage: ChatCompletionMessageParam[] = [{
+            const userMessage: ChatCompletionRequestMessage  = {
                 role: "user",
                 content: values.prompt
-            }]
-            const newMessages = userMessage
+            }
+            const newMessages =  [...messages, userMessage];
 
             const response = await axios.post("/api/conversation", {
                 messages: newMessages
