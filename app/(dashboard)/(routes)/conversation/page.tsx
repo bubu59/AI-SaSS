@@ -21,6 +21,9 @@ import Empty from "@/components/shared/Empty"
 import Loader from "@/components/shared/Loader"
 import { cn } from "@/lib/utils"
 
+import UserAvatar from "@/components/shared/UserAvatar"
+import BotAvatar from "@/components/shared/BotAvatar"
+
 const Conversation = () => {
     const router = useRouter()
     const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([])
@@ -114,10 +117,14 @@ const Conversation = () => {
                             key={message.content}
                             className={cn(
                                 "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                                message.role === "user" ? 'bg-white border border-black/10' : 'bg-muted'
                                 
                             )}
                         >
-                            {message.content}
+                            {message.role === "user" ? <UserAvatar/> : <BotAvatar/>}
+                            <p>
+                                {message.content}
+                            </p>
                         </div>
                     ))}
                 </div>
