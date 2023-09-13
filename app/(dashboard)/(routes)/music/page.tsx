@@ -22,9 +22,11 @@ import { cn } from "@/lib/utils"
 import UserAvatar from "@/components/shared/UserAvatar"
 import BotAvatar from "@/components/shared/BotAvatar"
 import { ChatCompletionRequestMessage } from "openai"
+import { useProModal } from "@/hooks/use-pro-modal"
 
 const MusicPage = () => {
     const router = useRouter()
+    const proModal = useProModal()
     const [music, setMusic] = useState<string>()
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -46,8 +48,9 @@ const MusicPage = () => {
             form.reset()
 
         } catch (error: any) {
-            //Open throw model 
-            console.log(error)
+            if(error?.response?.status == 403) {
+                proModal.onOpen()
+            }
         } finally {
             router.refresh()
         }

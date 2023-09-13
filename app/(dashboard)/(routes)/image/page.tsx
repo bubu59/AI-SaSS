@@ -21,11 +21,13 @@ import Loader from "@/components/shared/Loader"
 import { cn } from "@/lib/utils"
 import { Card, CardFooter } from "@/components/ui/card"
 import Image from "next/image"
+import { useProModal } from "@/hooks/use-pro-modal"
 
 
 
 const ImagePage = () => {
     const router = useRouter()
+    const proModal = useProModal()
     const [images, setImages] = useState<string[]>([])
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -50,8 +52,9 @@ const ImagePage = () => {
             setImages(urls)
             form.reset()
         } catch (error: any) {
-            //Open throw model 
-            console.log(error)
+            if(error?.response?.status == 403) {
+                proModal.onOpen()
+            }
         } finally {
             router.refresh()
         }

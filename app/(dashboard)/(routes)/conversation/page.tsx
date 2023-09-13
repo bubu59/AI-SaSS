@@ -22,8 +22,10 @@ import { cn } from "@/lib/utils"
 import UserAvatar from "@/components/shared/UserAvatar"
 import BotAvatar from "@/components/shared/BotAvatar"
 import { ChatCompletionRequestMessage } from "openai"
+import { useProModal } from "@/hooks/use-pro-modal"
 
 const Conversation = () => {
+    const proModal = useProModal()
     const router = useRouter()
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
 
@@ -52,8 +54,9 @@ const Conversation = () => {
             form.reset()
 
         } catch (error: any) {
-            //Open throw model 
-            console.log(error)
+            if(error?.response?.status == 403) {
+                proModal.onOpen()
+            }
         } finally {
             router.refresh()
         }
