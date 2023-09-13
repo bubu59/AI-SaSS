@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
 
 const VideoPage = () => {
     const router = useRouter()
-    const [music, setMusic] = useState<string>()
+    const [video, setVideo] = useState<string>()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -34,11 +34,11 @@ const VideoPage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            setMusic(undefined)
+            setVideo(undefined)
 
-            const response = await axios.post("/api/music", values)
+            const response = await axios.post("/api/video", values)
 
-            setMusic(response.data.audio)
+            setVideo(response.data[0])
             form.reset()
 
         } catch (error: any) {
@@ -55,8 +55,8 @@ const VideoPage = () => {
             title='Video Generation'
             description='Our most advanced video generation model'
             icon={Video}
-            iconColor="text-red-500"
-            bgColor="bg-red-500/10"
+            iconColor="text-red-700"
+            bgColor="bg-red-700/10"
         />
         <div className='px-4 lg:px-4'>
             <div>
@@ -73,7 +73,7 @@ const VideoPage = () => {
                                     <Input
                                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent "
                                         disabled={isLoading}
-                                        placeholder="Solo Piano"
+                                        placeholder="Clown fish swimming around a coral reef"
                                         {...field}
                                     />
                                 </FormControl>
@@ -95,18 +95,18 @@ const VideoPage = () => {
                         <Loader/>
                     </div>
                 )}
-                {!music && !isLoading && (
+                {!video && !isLoading && (
                     <Empty 
-                        label="No music generated ..."
+                        label="No video generated ..."
                     />
                 )}
-                {music && (
-                    <audio
+                {video && (
+                    <video 
+                        className="w-full aspect-video mt-8 rounded-lg border bg-black"
                         controls
-                        className="w-full"
                     >
-                        <source src={music}/>
-                    </audio>
+                        <source src={video}/>
+                    </video>
                 )}
             </div>
         </div>
