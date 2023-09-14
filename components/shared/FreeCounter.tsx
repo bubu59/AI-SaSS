@@ -9,11 +9,13 @@ import { Zap } from 'lucide-react'
 import { useProModal } from '@/hooks/use-pro-modal'
 
 interface CounterProps {
-    apiLimitCount: number
+    apiLimitCount: number,
+    isPro: boolean
 }
 
 const FreeCounter = ({
-    apiLimitCount = 0
+    apiLimitCount = 0,
+    isPro = false
 }: CounterProps) => {
     const proModal = useProModal()
     const [mounted, setMounted] = useState(false)
@@ -24,6 +26,10 @@ const FreeCounter = ({
 
     if (!mounted) {
         return null 
+    }
+
+    if (isPro) {
+        return null
     }
 
   return (
