@@ -23,6 +23,7 @@ import UserAvatar from "@/components/shared/UserAvatar"
 import BotAvatar from "@/components/shared/BotAvatar"
 import { ChatCompletionRequestMessage } from "openai"
 import { useProModal } from "@/hooks/use-pro-modal"
+import toast from "react-hot-toast"
 
 const MusicPage = () => {
     const router = useRouter()
@@ -50,6 +51,8 @@ const MusicPage = () => {
         } catch (error: any) {
             if(error?.response?.status == 403) {
                 proModal.onOpen()
+            }else {
+                toast.error("Something went wrong")
             }
         } finally {
             router.refresh()

@@ -19,6 +19,7 @@ import Empty from "@/components/shared/Empty"
 import Loader from "@/components/shared/Loader"
 import { cn } from "@/lib/utils"
 import { useProModal } from "@/hooks/use-pro-modal"
+import toast from "react-hot-toast"
 
 const VideoPage = () => {
     const router = useRouter()
@@ -46,6 +47,8 @@ const VideoPage = () => {
         } catch (error: any) {
             if(error?.response?.status == 403) {
                 proModal.onOpen()
+            }else {
+                toast.error("Something went wrong")
             }
         } finally {
             router.refresh()
